@@ -1,6 +1,6 @@
 ---
 title: 夜中、追憶、反応。
-date: 2026-03-01T01:00:00
+date: 2026-03-01T00:00:00
 tags:
   - 日記
 thumbnail: moon.jpg
