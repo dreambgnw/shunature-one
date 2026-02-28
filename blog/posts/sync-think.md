@@ -3,7 +3,7 @@ title: 同期について考える
 date: 2026-02-28T16:00:00
 tags:
   - 雑記
-thumbnail: sync.jpg
+thumbnail: sync.png
 ---
 
 **どうも**
