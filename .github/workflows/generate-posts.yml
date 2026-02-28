@@ -1,6 +1,7 @@
 name: Generate posts.json
 
 on:
+workflow_dispatch:
   push:
     paths:
       - 'blog/posts/**.md'
