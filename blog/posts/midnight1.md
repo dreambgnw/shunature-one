@@ -3,7 +3,7 @@ title: 夜中、追憶、反応。
 date: 2026-03-01T00:00:00
 tags:
   - 日記
-thumbnail: moon.jpg
+thumbnail: moon.webp
 thumbnail_credit: Ganapathy Kumar / Unsplash
 thumbnail_credit_url: https://unsplash.com/ja/%E5%86%99%E7%9C%9F/%E5%A4%9C%E9%96%93%E3%81%AE%E6%BA%80%E6%9C%88%E3%81%A8%E7%81%B0%E8%89%B2%E3%81%AE%E9%9B%B2-ve_uN9V8xqU
 ---

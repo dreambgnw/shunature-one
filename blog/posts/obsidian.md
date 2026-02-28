@@ -3,7 +3,7 @@ title: Obsidian
 date: 2026-02-28T06:30:00
 tags:
   - 雑記
-thumbnail: obsidian.png
+thumbnail: obsidian.webp
 ---
 **どうも** 
 

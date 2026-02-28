@@ -2,7 +2,7 @@
 title: Markdownはいいぞ
 tags:
   - 雑記
-thumbnail: markdown.png
+thumbnail: markdown.webp
 date: 2026-02-28T09:00:01
 ---
 **どうも**
