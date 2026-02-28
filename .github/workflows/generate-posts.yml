@@ -1,12 +1,12 @@
 name: Generate posts.json
 
 on:
-  workflow_dispatch:
   push:
     paths:
       - 'blog/posts/**.md'
   schedule:
     - cron: '0 * * * *'  # 毎時0分に実行
+  workflow_dispatch:
 
 jobs:
   generate:
