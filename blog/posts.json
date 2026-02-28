@@ -1,5 +1,32 @@
 [
     {
+        "slug": "sync-think",
+        "title": "同期について考える",
+        "date": "2026-02-28T16:00:00",
+        "tags": [
+            "雑記"
+        ],
+        "thumbnail": "sync.jpg"
+    },
+    {
+        "slug": "markdown",
+        "title": "Markdownはいいぞ",
+        "date": "2026-02-28T09:00:01",
+        "tags": [
+            "雑記"
+        ],
+        "thumbnail": "markdown.png"
+    },
+    {
+        "slug": "obsidian",
+        "title": "Obsidian",
+        "date": "2026-02-28T06:30:00",
+        "tags": [
+            "雑記"
+        ],
+        "thumbnail": "obsidian.png"
+    },
+    {
         "slug": "scene1",
         "title": "犬、公園、電車",
         "date": "2026-02-27T23:30:00",
