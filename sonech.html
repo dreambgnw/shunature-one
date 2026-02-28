@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Sonnet 4.6 — Indigo Night Dull Moon</title>
+    <meta name="description" content="このサイトの制作に使用したAIアシスタント、Claude Sonnet 4.6（そねち）について。">
+    <link rel="icon" href="/assets/icon.png" type="image/png">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .page { padding: 3.5rem 0; }
+
+        .page-top {
+            padding-bottom: 2rem;
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .page-title {
+            font-family: 'Shippori Mincho', serif;
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 0.4rem;
+        }
+
+        .page-sub {
+            font-size: 0.82rem;
+            color: var(--text-subtle);
+        }
+
+        .section-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text-subtle);
+            margin-bottom: 1.2rem;
+        }
+
+        .info-section {
+            margin-bottom: 3rem;
+        }
+
+        .info-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .info-row {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.875rem;
+        }
+
+        .info-key {
+            color: var(--text-subtle);
+            min-width: 120px;
+            flex-shrink: 0;
+            font-size: 0.78rem;
+        }
+
+        .info-val {
+            color: var(--text-muted);
+        }
+
+        .prose {
+            font-size: 0.9rem;
+            line-height: 1.9;
+            color: var(--text-muted);
+            max-width: 600px;
+        }
+
+        .prose p { margin-bottom: 1rem; }
+
+        .prose a {
+            color: var(--accent);
+            border-bottom: 1px solid var(--border-mid);
+            transition: border-color 0.2s;
+        }
+        .prose a:hover { border-color: var(--accent); }
+
+        .card-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            max-width: 600px;
+        }
+
+        .card {
+            padding: 1rem 1.2rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            background: var(--surface);
+        }
+
+        .card-title {
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 0.3rem;
+        }
+
+        .card-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 2.5rem 0;
+        }
+
+        .note {
+            font-size: 0.78rem;
+            color: var(--text-subtle);
+            line-height: 1.7;
+            max-width: 600px;
+            padding: 1rem 1.2rem;
+            border-left: 2px solid var(--border-mid);
+        }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="header-inner">
+        <a href="/" class="site-logo">INDM</a>
+        <div class="header-right">
+            <nav class="header-nav">
+                <a href="/">Home</a>
+                <a href="/sonech.html" class="active">Sonnet</a>
+                <a href="/blog/">Blog</a>
+                <a href="/gallery/">Gallery</a>
+            </nav>
+            <button class="theme-btn" onclick="toggleTheme()" aria-label="テーマ切替">
+                <svg id="theme-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
+        </button>
+        </div>
+        <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="メニュー">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</header>
+
+<nav class="mobile-menu" id="mobile-menu">
+        <a href="/">Home</a>
+        <a href="/sonech.html" class="active">Sonnet</a>
+        <a href="/blog/">Blog</a>
+        <a href="/gallery/">Gallery</a>
+</nav>
+
+<main>
+    <div class="page">
+        <div class="container">
+
+            <div class="page-top">
+                <h1 class="page-title">Claude Sonnet 4.6</h1>
+                <p class="page-sub">このサイトの制作に使用したAIアシスタントについて</p>
+            </div>
+
+            <!-- 概要 -->
+            <div class="info-section">
+                <p class="section-label">Overview</p>
+                <div class="prose">
+                    <p>このサイト（INDM / shunature.one）は、Anthropicが開発したAIアシスタント「Claude Sonnet 4.6」との協働により制作されました。</p>
+                    <p>コード設計・実装・デバッグのほか、構成の提案やデザインの方向性の検討においても活用しており、サイトの技術的基盤の大部分はClaudeとの対話を通じて構築されています。</p>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <!-- モデル情報 -->
+            <div class="info-section">
+                <p class="section-label">Model Info</p>
+                <div class="info-grid">
+                    <div class="info-row">
+                        <span class="info-key">Model</span>
+                        <span class="info-val">Claude Sonnet 4.6</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-key">Family</span>
+                        <span class="info-val">Claude 4.6</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-key">Developer</span>
+                        <span class="info-val"><a href="https://www.anthropic.com" target="_blank">Anthropic</a></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-key">Interface</span>
+                        <span class="info-val">Claude.ai</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-key">Nickname</span>
+                        <span class="info-val">そねち / sonech</span>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <!-- 制作での役割 -->
+            <div class="info-section">
+                <p class="section-label">Role in This Site</p>
+                <div class="card-list">
+                    <div class="card">
+                        <p class="card-title">HTML / CSS / JavaScript</p>
+                        <p class="card-desc">index.html、style.css、blog・galleryページのコーディング。レスポンシブデザイン、ライト／ダークモード対応、アニメーション実装。</p>
+                    </div>
+                    <div class="card">
+                        <p class="card-title">ブログシステム</p>
+                        <p class="card-desc">marked.jsを用いたMarkdownレンダリング、posts.jsonによる記事管理、history APIを使ったSPA的なURL制御の設計・実装。</p>
+                    </div>
+                    <div class="card">
+                        <p class="card-title">ギャラリーシステム</p>
+                        <p class="card-desc">photos.jsonによる写真管理、exifr.jsを用いたExif情報の自動取得、モーダル表示の設計・実装。</p>
+                    </div>
+                    <div class="card">
+                        <p class="card-title">インフラ・環境設定</p>
+                        <p class="card-desc">Vercel + GitHub構成の提案、vercel.jsonによるURL rewrite設定、ドメイン運用（shunature.one）のアドバイス。</p>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <!-- Anthropicについて -->
+            <div class="info-section">
+                <p class="section-label">About Anthropic</p>
+                <div class="prose">
+                    <p>AnthropicはAIの安全性研究を中心に据えたAI企業です。有害なコンテンツの生成を防ぐための安全対策（セーフガード）を重視しており、信頼性の高いAIシステムの開発を目標としています。</p>
+                    <p>詳細は<a href="https://www.anthropic.com" target="_blank">anthropic.com</a>をご参照ください。</p>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <p class="note">このページはサイト運営者（Shun Tonegawa）が手動で管理しています。掲載情報はサイト制作時点のものであり、モデルの仕様等は予告なく変更される場合があります。</p>
+
+        </div>
+    </div>
+</main>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <p class="footer-copy">&copy; 2026 Shun Tonegawa (shunature)</p>
+    </div>
+</footer>
+
+<script>
+    (function() {
+        const saved = localStorage.getItem('theme');
+        const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = saved || (dark ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+        updateIcon(theme);
+    })();
+
+    function updateIcon(theme) {
+        const el = document.getElementById('theme-icon');
+        el.innerHTML = theme === 'dark'
+            ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
+            : '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+    }
+
+    function toggleTheme() {
+        const cur = document.documentElement.getAttribute('data-theme');
+        const next = cur === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        updateIcon(next);
+    }
+    function toggleMenu() {
+    document.getElementById('hamburger').classList.toggle('open');
+    document.getElementById('mobile-menu').classList.toggle('open');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery — Indigo Night Dull Moon</title>
+    <meta name="description" content="Indigo Night Dull Moon の写真ギャラリー。">
+    <link rel="icon" href="/assets/icon.png" type="image/png">
+    <link rel="stylesheet" href="../style.css">
+    <script src="https://cdn.jsdelivr.net/npm/exifr/dist/lite.umd.js"></script>
+    <style>
+        .gallery-page { padding: 3.5rem 0; }
+
+        .gallery-top {
+            padding-bottom: 2rem;
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .gallery-page-title {
+            font-family: 'Shippori Mincho', serif;
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 0.4rem;
+        }
+
+        .gallery-page-sub {
+            font-size: 0.82rem;
+            color: var(--text-subtle);
+        }
+
+        /* Grid */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+        }
+
+        .photo-card {
+            position: relative;
+            aspect-ratio: 1;
+            overflow: hidden;
+            border-radius: 4px;
+            cursor: pointer;
+            background: var(--bg2);
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+            filter: grayscale(1);
+            transition: transform 0.5s ease, filter 0.4s ease;
+        }
+
+        .photo-card:hover img {
+            filter: grayscale(0);
+            transform: scale(1.03);
+        }
+
+        /* モーダル */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 300;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            transform: translateY(12px);
+            transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+            box-shadow: 0 24px 64px rgba(0,0,0,0.3);
+        }
+
+        .modal-overlay.open .modal {
+            transform: translateY(0);
+        }
+
+        .modal-image {
+            position: relative;
+            background: var(--bg2);
+            overflow: hidden;
+        }
+
+        .modal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .modal-info {
+            padding: 1.8rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            overflow-y: auto;
+            border-left: 1px solid var(--border);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0,0,0,0.4);
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #fff;
+            transition: background 0.2s;
+            z-index: 10;
+        }
+        .modal-close:hover { background: rgba(0,0,0,0.6); }
+
+        .modal-caption {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .modal-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .modal-meta-row {
+            display: flex;
+            gap: 0.8rem;
+            font-size: 0.8rem;
+        }
+
+        .modal-meta-key {
+            color: var(--text-subtle);
+            min-width: 64px;
+            flex-shrink: 0;
+        }
+
+        .modal-meta-val {
+            color: var(--text-muted);
+        }
+
+        .modal-section-label {
+            font-size: 0.68rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-subtle);
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 0;
+            color: var(--text-subtle);
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 640px) {
+            .photo-grid { grid-template-columns: repeat(2, 1fr); }
+            .modal { grid-template-columns: 1fr; grid-template-rows: 60vw auto; }
+            .modal-info { border-left: none; border-top: 1px solid var(--border); }
+        }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="header-inner">
+        <a href="/" class="site-logo">INDM</a>
+        <div class="header-right">
+            <nav class="header-nav">
+                <a href="/">Home</a>
+                <a href="/sonech.html">Sonnet</a>
+                <a href="/blog/">Blog</a>
+                <a href="/gallery/" class="active">Gallery</a>
+            </nav>
+            <button class="theme-btn" onclick="toggleTheme()" aria-label="テーマ切替">
+                <svg id="theme-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
+            </button>
+        </div>
+        <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="メニュー">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</header>
+     <nav class="mobile-menu" id="mobile-menu">
+        <a href="/">Home</a>
+        <a href="/sonech.html">Sonnet</a>
+        <a href="/blog/">Blog</a>
+        <a href="/gallery/" class="active">Gallery</a>
+</nav>
+
+<main>
+    <div class="gallery-page">
+        <div class="container-wide">
+            <div class="gallery-top">
+                <h1 class="gallery-page-title">Gallery</h1>
+                <p class="gallery-page-sub">撮ったもの、残ったもの。</p>
+            </div>
+            <div class="photo-grid" id="photo-grid"></div>
+        </div>
+    </div>
+</main>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
+    <div class="modal" id="modal">
+        <div class="modal-image">
+            <button class="modal-close" onclick="closeModal()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+            <img id="modal-img" src="" alt="">
+        </div>
+        <div class="modal-info">
+            <p class="modal-caption" id="modal-caption"></p>
+            <div>
+                <p class="modal-section-label">Info</p>
+                <div class="modal-meta" id="modal-meta"></div>
+            </div>
+            <div id="modal-exif-wrap" style="display:none;">
+                <p class="modal-section-label">Exif</p>
+                <div class="modal-meta" id="modal-exif"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <p class="footer-copy">&copy; 2026 Shun Tonegawa (shunature)</p>
+    </div>
+</footer>
+
+<script>
+    // ── テーマ ──
+    (function() {
+        const saved = localStorage.getItem('theme');
+        const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = saved || (dark ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+        updateIcon(theme);
+    })();
+
+    function updateIcon(theme) {
+        const el = document.getElementById('theme-icon');
+        el.innerHTML = theme === 'dark'
+            ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
+            : '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+    }
+
+    function toggleTheme() {
+        const cur = document.documentElement.getAttribute('data-theme');
+        const next = cur === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        updateIcon(next);
+    }
+
+    // ── ギャラリー読み込み ──
+    async function loadGallery() {
+        try {
+            const res = await fetch('./photos.json');
+            const photos = await res.json();
+            renderGrid(photos);
+        } catch(e) {
+            document.getElementById('photo-grid').innerHTML =
+                '<p class="empty-state">写真がありません。</p>';
+        }
+    }
+
+    function renderGrid(photos) {
+        const grid = document.getElementById('photo-grid');
+        if (photos.length === 0) {
+            grid.innerHTML = '<p class="empty-state">まだ写真がありません。</p>';
+            return;
+        }
+        grid.innerHTML = photos.map((p, i) => `
+            <div class="photo-card" onclick="openModal(${i})">
+                <img src="./photos/${p.file}" alt="${p.caption || ''}">
+            </div>
+        `).join('');
+        window._photos = photos;
+    }
+
+    // ── モーダル ──
+    async function openModal(index) {
+        const p = window._photos[index];
+        const imgSrc = `./photos/${p.file}`;
+
+        document.getElementById('modal-img').src = imgSrc;
+        document.getElementById('modal-caption').textContent = p.caption || '';
+
+        // 手書きmeta
+        const metaRows = [];
+        if (p.date) metaRows.push(['Date', p.date]);
+        if (p.device) metaRows.push(['Device', p.device]);
+        if (p.location) metaRows.push(['Location', p.location]);
+
+        document.getElementById('modal-meta').innerHTML = metaRows.map(([k, v]) => `
+            <div class="modal-meta-row">
+                <span class="modal-meta-key">${k}</span>
+                <span class="modal-meta-val">${v}</span>
+            </div>
+        `).join('');
+
+        // Exif取得
+        document.getElementById('modal-exif-wrap').style.display = 'none';
+        document.getElementById('modal-exif').innerHTML = '';
+
+        try {
+            const exif = await exifr.parse(imgSrc, ['Make', 'Model', 'FocalLength', 'FNumber', 'ExposureTime', 'ISO', 'DateTimeOriginal']);
+            if (exif) {
+                const exifRows = [];
+                if (exif.Make || exif.Model) exifRows.push(['Camera', [exif.Make, exif.Model].filter(Boolean).join(' ')]);
+                if (exif.FocalLength) exifRows.push(['Focal', `${exif.FocalLength}mm`]);
+                if (exif.FNumber) exifRows.push(['f/', `f/${exif.FNumber}`]);
+                if (exif.ExposureTime) exifRows.push(['Shutter', `1/${Math.round(1/exif.ExposureTime)}s`]);
+                if (exif.ISO) exifRows.push(['ISO', exif.ISO]);
+                if (exif.DateTimeOriginal) exifRows.push(['Taken', exif.DateTimeOriginal.toLocaleDateString('ja-JP')]);
+
+                if (exifRows.length > 0) {
+                    document.getElementById('modal-exif').innerHTML = exifRows.map(([k, v]) => `
+                        <div class="modal-meta-row">
+                            <span class="modal-meta-key">${k}</span>
+                            <span class="modal-meta-val">${v}</span>
+                        </div>
+                    `).join('');
+                    document.getElementById('modal-exif-wrap').style.display = 'block';
+                }
+            }
+        } catch(e) {
+            // Exif取得失敗は無視
+        }
+
+        document.getElementById('modal-overlay').classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        document.getElementById('modal-overlay').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    function closeModalOutside(e) {
+        if (e.target === document.getElementById('modal-overlay')) closeModal();
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    loadGallery();
+    function toggleMenu() {
+    document.getElementById('hamburger').classList.toggle('open');
+    document.getElementById('mobile-menu').classList.toggle('open');
+}
+</script>
+</body>
+</html>

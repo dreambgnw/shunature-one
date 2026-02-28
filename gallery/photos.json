@@ -1,0 +1,23 @@
+[
+    {
+        "file": "sea.jpg",
+        "caption": "Sea",
+        "date": "2024-11-25",
+        "device": "Pixel 7 Pro",
+        "location": "沖縄県"
+    },
+    {
+        "file": "keyboard.jpg",
+        "caption": "Keyboard",
+        "date": "2025-10-23",
+        "device": "Pixel 9a",
+        "location": "埼玉県"
+    },
+    {
+        "file": "apple-garden.jpg",
+        "caption": "Apple Garden",
+        "date": "2026-01-12",
+        "device": "Pixel 9a",
+        "location": "埼玉県"
+    }
+]

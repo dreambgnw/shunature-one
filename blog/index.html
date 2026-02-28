@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog — Indigo Night Dull Moon</title>
+    <meta name="description" content="Shun Tonegawa (shunature) のブログ。書いたもの、残したもの。">
+    <link rel="icon" href="/assets/icon.png" type="image/png">
+    <link rel="stylesheet" href="../style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        .blog-wrap { padding: 3.5rem 0; }
+
+        .blog-layout {
+            display: grid;
+            grid-template-columns: 1fr 200px;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .blog-top {
+            padding-bottom: 2rem;
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .blog-page-title {
+            font-family: 'Shippori Mincho', serif;
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 0.4rem;
+        }
+
+        .blog-page-sub {
+            font-size: 0.82rem;
+            color: var(--text-subtle);
+        }
+
+        /* ── 記事一覧 ── */
+        .post-list { list-style: none; }
+        .post-item + .post-item { border-top: 1px solid var(--border); }
+
+        .post-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            color: var(--text);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .post-link:hover { color: var(--accent); }
+
+        /* サムネイル */
+        .post-thumb {
+            width: 72px;
+            height: 54px;
+            flex-shrink: 0;
+            border-radius: 4px;
+            overflow: hidden;
+            background: var(--bg2);
+        }
+
+        .post-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(1);
+            transition: filter 0.3s;
+        }
+
+        .post-link:hover .post-thumb img {
+            filter: grayscale(0);
+        }
+
+        .post-thumb-empty {
+            width: 100%;
+            height: 100%;
+            background: var(--bg2);
+        }
+
+        /* テキスト */
+        .post-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .post-title {
+            font-size: 0.95rem;
+            font-weight: 400;
+            margin-bottom: 0.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .post-bottom {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .post-date {
+            font-size: 0.75rem;
+            color: var(--text-subtle);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .post-tag {
+            font-size: 0.68rem;
+            color: var(--accent);
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            padding: 0.1em 0.5em;
+            border-radius: 999px;
+        }
+
+        /* ── タグサイドバー ── */
+        .tag-sidebar {
+            position: sticky;
+            top: 72px;
+        }
+
+        .tag-sidebar-label {
+            font-size: 0.68rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text-subtle);
+            margin-bottom: 0.5rem;
+        }
+
+        .tag-list {
+            list-style: none;
+        }
+
+        .tag-list li {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tag-btn {
+            width: 100%;
+            background: none;
+            border: none;
+            padding: 0.6rem 0.3rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: inherit;
+            transition: color 0.2s;
+            color: var(--text-muted);
+        }
+
+        .tag-btn:hover,
+        .tag-btn.active {
+            color: var(--accent);
+        }
+
+        .tag-btn-name {
+            font-size: 0.8rem;
+        }
+
+        .tag-btn-count {
+            font-size: 0.75rem;
+            color: var(--text-subtle);
+        }
+
+        .tag-btn.active .tag-btn-count {
+            color: var(--accent);
+        }
+
+        .tag-mobile {
+            display: none;
+            margin-bottom: 2rem;
+        }
+
+        /* ── 記事表示 ── */
+        .article-view { display: none; padding: 3.5rem 0; }
+        .article-view.open { display: block; }
+
+        .article-thumbnail {
+            width: 100%;
+            aspect-ratio: 16 / 7;
+            overflow: hidden;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            background: var(--bg2);
+        }
+
+        .article-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .article-thumbnail-credit {
+            font-size: 0.72rem;
+            color: var(--text-subtle);
+            margin-bottom: 2rem;
+            text-align: right;
+        }
+
+        .article-thumbnail-credit a {
+            color: var(--text-subtle);
+            border-bottom: 1px solid var(--border);
+            transition: color 0.2s;
+        }
+        .article-thumbnail-credit a:hover { color: var(--accent); }
+
+        .article-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.8rem;
+            color: var(--text-subtle);
+            margin-bottom: 2.5rem;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+        .article-back:hover { color: var(--text-muted); }
+
+        .empty-state {
+            padding: 3rem 0;
+            color: var(--text-subtle);
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 760px) {
+            .blog-layout { grid-template-columns: 1fr; }
+            .tag-sidebar { display: none; }
+            .tag-mobile { display: block; }
+            .post-title { white-space: normal; }
+            .post-link { flex-direction: row; align-items: center; }
+            .post-thumb { width: 64px; height: 48px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="header-inner">
+        <a href="/" class="site-logo">INDM</a>
+        <div class="header-right">
+            <nav class="header-nav">
+                <a href="/">Home</a>
+                <a href="/sonech.html">Sonnet</a>
+                <a href="/blog/" class="active">Blog</a>
+                <a href="/gallery/">Gallery</a>
+            </nav>
+            <button class="theme-btn" onclick="toggleTheme()" aria-label="テーマ切替">
+                <svg id="theme-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
+            </button>
+        </div>
+        <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="メニュー">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</header>
+
+<nav class="mobile-menu" id="mobile-menu">
+    <a href="/">Home</a>
+    <a href="/sonech.html">Sonnet</a>
+    <a href="/blog/" class="active">Blog</a>
+    <a href="/gallery/">Gallery</a>
+</nav>
+
+<main>
+    <div class="blog-wrap" id="list-view">
+        <div class="container">
+            <div class="blog-top">
+                <h1 class="blog-page-title">Blog</h1>
+                <p class="blog-page-sub">書いたもの、残したもの。</p>
+            </div>
+
+            <div class="tag-mobile" id="tag-mobile"></div>
+
+            <div class="blog-layout">
+                <div>
+                    <ul class="post-list" id="post-list"></ul>
+                </div>
+                <aside class="tag-sidebar" id="tag-sidebar"></aside>
+            </div>
+        </div>
+    </div>
+
+    <div class="article-view" id="article-view">
+        <div class="container">
+            <a class="article-back" onclick="showList()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                一覧に戻る
+            </a>
+            <span class="article-date" id="article-date"></span>
+            <div id="article-thumbnail"></div>
+            <h1 class="article-title" id="article-title"></h1>
+            <div class="article-body" id="article-body"></div>
+        </div>
+    </div>
+</main>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <p class="footer-copy">&copy; 2026 Shun Tonegawa (shunature)</p>
+    </div>
+</footer>
+
+<script>
+    (function() {
+        const saved = localStorage.getItem('theme');
+        const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = saved || (dark ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+        updateIcon(theme);
+    })();
+
+    function updateIcon(theme) {
+        const el = document.getElementById('theme-icon');
+        el.innerHTML = theme === 'dark'
+            ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
+            : '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+    }
+
+    function toggleTheme() {
+        const cur = document.documentElement.getAttribute('data-theme');
+        const next = cur === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        updateIcon(next);
+    }
+
+    function toggleMenu() {
+        document.getElementById('hamburger').classList.toggle('open');
+        document.getElementById('mobile-menu').classList.toggle('open');
+    }
+
+    let allPosts = [];
+
+    async function loadPosts() {
+        try {
+            const res = await fetch('./posts.json');
+            allPosts = await res.json();
+            allPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+            renderTags();
+            renderList(allPosts);
+
+            const slug = getSlugFromURL();
+            if (slug) {
+                const post = allPosts.find(p => p.slug === slug);
+                if (post) showPost(post.slug, post.title, post.date, false);
+            }
+        } catch(e) {
+            document.getElementById('post-list').innerHTML =
+                '<li class="empty-state">記事がありません。</li>';
+        }
+    }
+
+    function renderTags() {
+        const counts = {};
+        allPosts.forEach(p => {
+            (p.tags || []).forEach(t => { counts[t] = (counts[t] || 0) + 1; });
+        });
+        const tags = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+        if (tags.length === 0) return;
+
+        const html = `
+            <p class="tag-sidebar-label">Tags</p>
+            <ul class="tag-list">
+                <li>
+                    <button class="tag-btn active" id="tag-all" onclick="clearTag()">
+                        <span class="tag-btn-name">All</span>
+                        <span class="tag-btn-count">${allPosts.length}</span>
+                    </button>
+                </li>
+                ${tags.map(([tag, count]) => `
+                    <li>
+                        <button class="tag-btn" onclick="filterTag('${tag}')" data-tag="${tag}">
+                            <span class="tag-btn-name">${tag}</span>
+                            <span class="tag-btn-count">${count}</span>
+                        </button>
+                    </li>
+                `).join('')}
+            </ul>
+        `;
+        document.getElementById('tag-sidebar').innerHTML = html;
+        document.getElementById('tag-mobile').innerHTML = html;
+    }
+
+    function filterTag(tag) {
+        document.querySelectorAll('.tag-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.tag === tag);
+        });
+        document.querySelectorAll('#tag-all').forEach(el => el.classList.remove('active'));
+        renderList(allPosts.filter(p => (p.tags || []).includes(tag)));
+    }
+
+    function clearTag() {
+        document.querySelectorAll('.tag-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('#tag-all').forEach(el => el.classList.add('active'));
+        renderList(allPosts);
+    }
+
+    function renderList(posts) {
+        const ul = document.getElementById('post-list');
+        if (posts.length === 0) {
+            ul.innerHTML = '<li class="empty-state">該当する記事がありません。</li>';
+            return;
+        }
+        ul.innerHTML = posts.map(p => `
+            <li class="post-item">
+                <div class="post-link" onclick="showPost('${p.slug}', \`${p.title.replace(/`/g, '\\`')}\`, '${p.date}', true)">
+                    <div class="post-thumb">
+                        ${p.thumbnail
+                            ? `<img src="./thumbnails/${p.thumbnail}" alt="">`
+                            : `<div class="post-thumb-empty"></div>`
+                        }
+                    </div>
+                    <div class="post-info">
+                        <p class="post-title">${p.title}</p>
+                        <div class="post-bottom">
+                            <span class="post-date">${formatDate(p.date)}</span>
+                            ${(p.tags || []).slice(0,1).map(t =>
+                                `<span class="post-tag">${t}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                </div>
+            </li>
+        `).join('');
+    }
+
+    async function showPost(slug, title, date, pushState) {
+        try {
+            const res = await fetch(`./posts/${slug}.md`);
+            if (!res.ok) throw new Error();
+            const md = await res.text();
+            const body = md.replace(/^---\n[\s\S]*?\n---\n/, '');
+
+            // フロントマターからサムネイル情報取得
+            const fmMatch = md.match(/^---\n([\s\S]*?)\n---/);
+            let thumbnail = null, credit = null, creditUrl = null;
+            if (fmMatch) {
+                const fm = fmMatch[1];
+                const tMatch = fm.match(/^thumbnail:\s*(.+)$/m);
+                const cMatch = fm.match(/^thumbnail_credit:\s*(.+)$/m);
+                const uMatch = fm.match(/^thumbnail_credit_url:\s*(.+)$/m);
+                if (tMatch) thumbnail = tMatch[1].trim().replace(/^["']|["']$/g, '');
+                if (cMatch) credit = cMatch[1].trim().replace(/^["']|["']$/g, '');
+                if (uMatch) creditUrl = uMatch[1].trim().replace(/^["']|["']$/g, '');
+            }
+
+            // サムネイル表示
+            const thumbEl = document.getElementById('article-thumbnail');
+            if (thumbnail) {
+                thumbEl.innerHTML = `
+                    <div class="article-thumbnail">
+                        <img src="./thumbnails/${thumbnail}" alt="">
+                    </div>
+                    ${credit ? `<p class="article-thumbnail-credit">${
+                        creditUrl
+                            ? `<a href="${creditUrl}" target="_blank">${credit}</a>`
+                            : credit
+                    }</p>` : ''}
+                `;
+            } else {
+                thumbEl.innerHTML = '';
+            }
+
+            document.getElementById('article-date').textContent = formatDate(date, true);
+            document.getElementById('article-title').textContent = title;
+            document.getElementById('article-body').innerHTML = marked.parse(body);
+            document.title = `${title} — Indigo Night Dull Moon`;
+
+            if (pushState) history.pushState({ slug, title, date }, '', `/blog/${slug}`);
+            document.getElementById('list-view').style.display = 'none';
+            document.getElementById('article-view').classList.add('open');
+            window.scrollTo(0, 0);
+        } catch(e) {
+            alert('記事の読み込みに失敗しました。');
+        }
+    }
+
+    function showList() {
+        document.getElementById('article-view').classList.remove('open');
+        document.getElementById('list-view').style.display = '';
+        document.title = 'Blog — Indigo Night Dull Moon';
+        history.pushState(null, '', '/blog/');
+        window.scrollTo(0, 0);
+    }
+
+    window.addEventListener('popstate', (e) => {
+        if (e.state && e.state.slug) {
+            showPost(e.state.slug, e.state.title, e.state.date, false);
+        } else {
+            document.getElementById('article-view').classList.remove('open');
+            document.getElementById('list-view').style.display = '';
+            document.title = 'Blog — Indigo Night Dull Moon';
+        }
+    });
+
+    function getSlugFromURL() {
+        const match = window.location.pathname.match(/^\/blog\/(.+)$/);
+        return match ? match[1] : null;
+    }
+
+    function formatDate(str, showTime = false) {
+        const d = new Date(str);
+        const date = `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+        if (!showTime) return date;
+        const hasTime = str.includes('T') && !str.endsWith('T00:00:00');
+        if (!hasTime) return date;
+        const time = `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+        return `${date} ${time}`;
+    }
+
+    loadPosts();
+</script>
+</body>
+</html>

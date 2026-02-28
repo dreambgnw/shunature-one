@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indigo Night Dull Moon</title>
+    <meta name="description" content="Indigo Night Dull Moonの公式サイト。利根川 駿（shunature）による、ベース演奏や画像編集などのクリエイティブな活動を紹介します。">
+    <link rel="icon" href="/assets/icon.png" type="image/png">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .hero {
+            padding: 5rem 0 4rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .hero-night {
+            transition: color 0.8s ease;
+        }
+        .hero-moon {
+            transition: color 0.8s ease;
+        }
+        .hero-night.lit {
+            color: var(--accent);
+        }
+        .hero-moon.lit {
+             color: var(--text-subtle);
+        }
+        .hero-name {
+            font-family: 'Shippori Mincho', serif;
+            font-size: clamp(2.4rem, 6vw, 4rem);
+            font-weight: 500;
+            line-height: 1.15;
+            margin-bottom: 0.6rem;
+        }
+        .hero-sub {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+        .hero-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            max-width: 480px;
+            margin: 0;
+        }
+        .about-section {
+            padding: 3.5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .section-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text-subtle);
+            margin-bottom: 1.8rem;
+        }
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+        .profile-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
+        .profile-row {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.875rem;
+        }
+        .profile-key {
+            color: var(--text-subtle);
+            min-width: 72px;
+            flex-shrink: 0;
+            font-size: 0.78rem;
+        }
+        .profile-val { color: var(--text); }
+        .about-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.85;
+            margin: 0;
+        }
+        .links-section {
+            padding: 3.5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .links-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+        .link-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-mid);
+            border-radius: 999px;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+        .link-item:hover {
+            border-color: var(--accent);
+            color: var(--text);
+        }
+        .contact-section {
+            padding: 3.5rem 0;
+        }
+        .contact-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .contact-list li a {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            transition: color 0.2s;
+        }
+        .contact-list li a:hover { color: var(--accent); }
+        .contact-label {
+            font-size: 0.75rem;
+            color: var(--text-subtle);
+        }
+        @media (max-width: 640px) {
+            .hero { padding: 3rem 0 2.5rem; }
+            .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="header-inner">
+        <a href="/" class="site-logo">INDM</a>
+        <div class="header-right">
+            <nav class="header-nav">
+                <a href="/" class="active">Home</a>
+                <a href="/sonech.html">Sonnet</a>
+                <a href="/blog/">Blog</a>
+                <a href="/gallery/">Gallery</a>
+            </nav>
+            <button class="theme-btn" onclick="toggleTheme()" aria-label="テーマ切替">
+                <svg id="theme-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
+            </button>
+        </div>
+        <!-- ハンバーガーボタン -->
+         <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="メニュー">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</header>
+     <nav class="mobile-menu" id="mobile-menu">
+        <a href="/" class="active">Home</a>
+        <a href="/sonech.html">Sonnet</a>
+        <a href="/blog/">Blog</a>
+        <a href="/gallery/">Gallery</a>
+</nav>
+
+<main>
+    <section class="hero">
+        <div class="container-wide">
+            <h1 class="hero-name">
+                Indigo <span class="hero-night">Night</span><br>
+                Dull <span class="hero-moon">Moon</span>
+            </h1>
+            <p class="hero-sub">Shun Tonegawa / shunature</p>
+            <p class="hero-desc">Bassist / Student / Creative mind</p>
+        </div>
+    </section>
+
+    <section class="about-section" id="about">
+        <div class="container-wide">
+            <p class="section-label">About</p>
+            <div class="about-grid">
+                <div class="profile-items">
+                    <div class="profile-row">
+                        <span class="profile-key">Name</span>
+                        <span class="profile-val">利根川 駿 / Shun Tonegawa</span>
+                    </div>
+                    <div class="profile-row">
+                        <span class="profile-key">Handle</span>
+                        <span class="profile-val">shunature</span>
+                    </div>
+                    <div class="profile-row">
+                        <span class="profile-key">生年月日</span>
+                        <span class="profile-val">2007年11月03日</span>
+                    </div>
+                    <div class="profile-row">
+                        <span class="profile-key">出身地</span>
+                        <span class="profile-val">埼玉県</span>
+                    </div>
+                    <div class="profile-row">
+                        <span class="profile-key">職業</span>
+                        <span class="profile-val">学生</span>
+                    </div>
+                </div>
+                <div>
+                    <p class="about-desc">ちょびっと画像編集とベース演奏ができる学生です。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="links-section" id="links">
+        <div class="container-wide">
+            <p class="section-label">Links</p>
+            <div class="links-grid">
+                <a href="https://signal.me/#eu/Lupvn1ZUzkWiUdNHo7AhNnU4OH7fw51aGu7EdCnJNVIfV2NFPRRJKI9kNw-_Br-F" class="link-item" target="_blank">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    Signal
+                </a>
+                <a href="https://discord.com/users/1469961720997875745" class="link-item" target="_blank">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    Discord
+                </a>
+                <a href="https://music.apple.com/profile/shunature" class="link-item" target="_blank">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                    Apple Music
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-section" id="contact">
+        <div class="container-wide">
+            <p class="section-label">Contact</p>
+            <ul class="contact-list">
+                <li>
+                    <a href="mailto:contact@ffnet.work">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        <span>contact@ffnet.work<span class="contact-label"> — 運営へのご連絡（サイト・その他）</span></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="mailto:bassnc@ffnet.work">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        <span>bassnc@ffnet.work<span class="contact-label"> — 私個人へのご連絡（質問・交流）</span></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <p class="footer-copy">&copy; 2026 Shun Tonegawa (shunature)</p>
+        <div class="footer-links">
+        </div>
+    </div>
+</footer>
+
+<script>
+    (function() {
+        const saved = localStorage.getItem('theme');
+        const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = saved || (dark ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+        updateIcon(theme);
+    })();
+    function updateIcon(theme) {
+        const el = document.getElementById('theme-icon');
+        el.innerHTML = theme === 'dark'
+            ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
+            : '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+    }
+    function toggleTheme() {
+        const cur = document.documentElement.getAttribute('data-theme');
+        const next = cur === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        updateIcon(next);
+    }
+
+function toggleMenu() {
+    document.getElementById('hamburger').classList.toggle('open');
+    document.getElementById('mobile-menu').classList.toggle('open');
+}
+
+function runHeroAnim() {
+    const night = document.querySelector('.hero-night');
+    const moon  = document.querySelector('.hero-moon');
+    if (!night || !moon) return;
+
+    night.classList.add('lit');
+    moon.classList.add('lit');
+
+    setTimeout(() => {
+        night.classList.remove('lit');
+        moon.classList.remove('lit');
+    }, 2000);
+}
+
+setTimeout(() => {
+    runHeroAnim();
+    setInterval(runHeroAnim, 4000);
+}, 1000);
+</script>
+</body>
+</html>
